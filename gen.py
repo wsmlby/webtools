@@ -1,6 +1,6 @@
 import os
 TAGS = {
-    "{{GA_TAG}}": "pages/_includes/head-custom-google-analytics.html"
+    "{{GA_TAG}}": "docs/_includes/head-custom-google-analytics.html"
 }
 
 
@@ -25,7 +25,7 @@ def template_fill(src_file, dest_file):
 
 def main():
     SRC_DIR = "src"
-    DESC_DIR = "pages"
+    DESC_DIR = "docs"
     for fn in os.listdir(SRC_DIR):
         template_fill(os.path.join(SRC_DIR, fn), os.path.join(DESC_DIR, fn))
 
