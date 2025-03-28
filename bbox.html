@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bounding Box Drawing on Image</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    /* Hide container until an image is loaded */
+    #container {
+      position: relative;
+      display: none;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    #image {
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      background-color: rgba(255, 0, 0, 0.5);
+      pointer-events: none;
+    }
+    input[type="text"] {
+      width: 200px;
+    }
+    button {
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bounding Box Drawing on Image</h1>
+  <!-- Image selection and paste -->
+  <input type="file" id="fileInput" accept="image/*">
+  <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
+  
+  <!-- Container for the image and bounding boxes (initially hidden) -->
+  <div id="container">
+    <img id="image" src="" alt="Your Image" draggable="false">
+  </div>
+  
+  <!-- Display full image size -->
+  <p id="imgSize"></p>
+  <!-- Display click coordinates -->
+  <p id="clickCoords">Click coordinates: </p>
+  <!-- Display box coordinates -->
+  <p id="boxCoords">Box coordinates: </p>
+  
+  <!-- Controls for bounding box via input -->
+  <p>
+    Enter bounding box coordinates (format: x1,y1,x2,y2): 
+    <textarea type="text" id="coordInput" placeholder="x1,y1,x2,y2"></textarea>
+    <button id="drawBoxBtn">Draw Box</button>
+    <button id="clearBoxesBtn">Clear Boxes</button>
+  </p>
+  
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const image = document.getElementById('image');
+    const container = document.getElementById('container');
+    const imgSizeDisplay = document.getElementById('imgSize');
+    const clickCoordsDisplay = document.getElementById('clickCoords');
+    const boxCoordsDisplay = document.getElementById('boxCoords');
+    const coordInput = document.getElementById('coordInput');
+    const drawBoxBtn = document.getElementById('drawBoxBtn');
+    const clearBoxesBtn = document.getElementById('clearBoxesBtn');
+    
+    let isDrawing = false;
+    let startX = 0;
+    let startY = 0;
+    let currentOverlay = null;
+    let scale = 1; // Scale factor: display size / natural size
+    
+    // Load and display image from a file or blob
+    function loadImage(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        image.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Handle file selection
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        loadImage(file);
+      }
+    });
+    
+    // Handle pasting image from clipboard
+    window.addEventListener('paste', function(e) {
+      const items = e.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          const blob = items[i].getAsFile();
+          loadImage(blob);
+          break;
+        }
+      }
+    });
+    
+    // When image loads, compute scale factor and set display dimensions (max 640x640)
+    image.addEventListener('load', function() {
+      const naturalWidth = image.naturalWidth;
+      const naturalHeight = image.naturalHeight;
+      scale = Math.min(640 / naturalWidth, 640 / naturalHeight, 1);
+      const displayWidth = naturalWidth * scale;
+      const displayHeight = naturalHeight * scale;
+      container.style.width = displayWidth + 'px';
+      container.style.height = displayHeight + 'px';
+      image.style.width = displayWidth + 'px';
+      image.style.height = displayHeight + 'px';
+      imgSizeDisplay.textContent = 'Image size (full resolution): ' + naturalWidth + ' x ' + naturalHeight;
+      container.style.display = "inline-block";
+    });
+    
+    // Display click coordinates (both absolute and relative)
+    container.addEventListener('click', function(e) {
+      // Do not conflict with drawing (mousedown/move/up)
+      if (isDrawing) return;
+      const rect = container.getBoundingClientRect();
+      const dispX = e.clientX - rect.left;
+      const dispY = e.clientY - rect.top;
+      const fullX = dispX / scale;
+      const fullY = dispY / scale;
+      const relX = fullX / image.naturalWidth;
+      const relY = fullY / image.naturalHeight;
+      clickCoordsDisplay.textContent = 'Click coordinates: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
+          ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
+    });
+    
+    // Mouse events for drawing a bounding box
+    container.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return; // left click only
+      isDrawing = true;
+      const rect = container.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+      currentOverlay = document.createElement('div');
+      currentOverlay.classList.add('overlay');
+      currentOverlay.style.left = startX + 'px';
+      currentOverlay.style.top = startY + 'px';
+      currentOverlay.style.width = '0px';
+      currentOverlay.style.height = '0px';
+      container.appendChild(currentOverlay);
+    });
+    
+    container.addEventListener('mousemove', function(e) {
+      if (!isDrawing) return;
+      const rect = container.getBoundingClientRect();
+      const currentX = e.clientX - rect.left;
+      const currentY = e.clientY - rect.top;
+      const x = Math.min(startX, currentX);
+      const y = Math.min(startY, currentY);
+      const width = Math.abs(currentX - startX);
+      const height = Math.abs(currentY - startY);
+      currentOverlay.style.left = x + 'px';
+      currentOverlay.style.top = y + 'px';
+      currentOverlay.style.width = width + 'px';
+      currentOverlay.style.height = height + 'px';
+    });
+    
+    container.addEventListener('mouseup', function(e) {
+      if (!isDrawing) return;
+      isDrawing = false;
+      const rect = container.getBoundingClientRect();
+      const endX = e.clientX - rect.left;
+      const endY = e.clientY - rect.top;
+      const dispX1 = Math.min(startX, endX);
+      const dispY1 = Math.min(startY, endY);
+      const dispX2 = Math.max(startX, endX);
+      const dispY2 = Math.max(startY, endY);
+      // Convert display coordinates to full image coordinates
+      const absX1 = dispX1 / scale;
+      const absY1 = dispY1 / scale;
+      const absX2 = dispX2 / scale;
+      const absY2 = dispY2 / scale;
+      // Compute relative coordinates (with 3 digits)
+      const relX1 = absX1 / image.naturalWidth;
+      const relY1 = absY1 / image.naturalHeight;
+      const relX2 = absX2 / image.naturalWidth;
+      const relY2 = absY2 / image.naturalHeight;
+      
+      boxCoordsDisplay.textContent = 'Box coordinates: Absolute: ' + 
+         Math.round(absX1) + ', ' + Math.round(absY1) + ', ' + Math.round(absX2) + ', ' + Math.round(absY2) +
+         ' | Relative: ' + relX1.toFixed(3) + ', ' + relY1.toFixed(3) + ', ' + relX2.toFixed(3) + ', ' + relY2.toFixed(3);
+    });
+    function drawbbox(inputVal) {
+      const parts = inputVal.split(',').map(s => parseFloat(s.trim()));
+      if (parts.length !== 4 || parts.some(isNaN)) {
+        alert('Please enter valid coordinates in the format: x1,y1,x2,y2');
+        return;
+      }
+      let [x1, y1, x2, y2] = parts;
+      // If all values are in [0,1], treat them as ratios
+      if (x1 >= 0 && x1 <= 1 &&
+          y1 >= 0 && y1 <= 1 &&
+          x2 >= 0 && x2 <= 1 &&
+          y2 >= 0 && y2 <= 1) {
+        x1 *= image.naturalWidth;
+        y1 *= image.naturalHeight;
+        x2 *= image.naturalWidth;
+        y2 *= image.naturalHeight;
+      }
+      // Compute display coordinates
+      const dispX1 = Math.min(x1, x2) * scale;
+      const dispY1 = Math.min(y1, y2) * scale;
+      const dispX2 = Math.max(x1, x2) * scale;
+      const dispY2 = Math.max(y1, y2) * scale;
+      const width = dispX2 - dispX1;
+      const height = dispY2 - dispY1;
+      
+      const overlay = document.createElement('div');
+      overlay.classList.add('overlay');
+      overlay.style.left = dispX1 + 'px';
+      overlay.style.top = dispY1 + 'px';
+      overlay.style.width = width + 'px';
+      overlay.style.height = height + 'px';
+      container.appendChild(overlay);
+    }
+    // Draw a bounding box from input coordinates.
+    // Accepts either absolute pixel coordinates or ratios (if all values are between 0 and 1).
+    drawBoxBtn.addEventListener('click', function() {
+      const inputVal = coordInput.value;
+      for(l of inputVal.split("\n"))if(l.trim().length>0) drawbbox(l);
+    });
+    
+    // Clear all bounding boxes
+    clearBoxesBtn.addEventListener('click', function() {
+      const overlays = container.querySelectorAll('.overlay');
+      overlays.forEach(overlay => overlay.remove());
+    });
+  </script>
+</body>
+</html>
