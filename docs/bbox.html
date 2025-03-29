@@ -71,6 +71,9 @@
       margin-left: 5px;
       margin-top: 5px;
     }
+    .readbox {
+      width: 640px;
+    }
   </style>
   
   <style>
@@ -158,7 +161,7 @@ div.content {
     <!-- Display click coordinates -->
     <p id="clickCoords">Click coordinates: </p>
     <!-- Display box coordinates -->
-    <p id="boxCoords">Box coordinates: </p>
+    <textarea id="boxCoords" readonly class="readbox" rows="3">Box coordinates: </textarea>
 
     <!-- Controls for bounding box via input -->
     <p>
@@ -242,20 +245,19 @@ div.content {
       container.style.display = "inline-block";
     });
 
-    // Display click coordinates (both absolute and relative)
-    container.addEventListener('click', function (e) {
-      // Do not conflict with drawing (mousedown/move/up)
-      if (isDrawing) return;
+    
+    container.addEventListener('mousemove', function (e) {
       const rect = container.getBoundingClientRect();
       const dispX = e.clientX - rect.left;
       const dispY = e.clientY - rect.top;
+      // Convert to full image coordinates.
       const fullX = dispX / scale;
       const fullY = dispY / scale;
       const relX = fullX / image.naturalWidth;
       const relY = fullY / image.naturalHeight;
-      clickCoordsDisplay.textContent = 'Click coordinates: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
-        ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
-    });
+      clickCoordsDisplay.textContent = 'Mouse: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
+        '\nRelative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
+    })
 
     // Mouse events for drawing a bounding box
     container.addEventListener('mousedown', function (e) {
@@ -308,10 +310,13 @@ div.content {
       const relY1 = absY1 / image.naturalHeight;
       const relX2 = absX2 / image.naturalWidth;
       const relY2 = absY2 / image.naturalHeight;
-
-      boxCoordsDisplay.textContent = 'Box coordinates: Absolute: ' +
-        Math.round(absX1) + ', ' + Math.round(absY1) + ', ' + Math.round(absX2) + ', ' + Math.round(absY2) +
-        ' | Relative: ' + relX1.toFixed(3) + ', ' + relY1.toFixed(3) + ', ' + relX2.toFixed(3) + ', ' + relY2.toFixed(3);
+      const width = Math.abs(absX2 - absX1);
+      const height = Math.abs(absY2 - absY1);
+      const relWidth = width / image.naturalWidth;
+      const relHeight = height / image.naturalHeight;
+      boxCoordsDisplay.textContent = 'Box coordinates: Absolute: \n' +
+        Math.round(absX1) + ', ' + Math.round(absY1) + ', ' + Math.round(absX2) + ', ' + Math.round(absY2) + " width: " + Math.round(width) + " height: " + Math.round(height) + " size: ("+ Math.round(width) + "x" + Math.round(height) + ")" +
+        '\nRelative: ' + relX1.toFixed(3) + ', ' + relY1.toFixed(3) + ', ' + relX2.toFixed(3) + ', ' + relY2.toFixed(3) + " width: " + relWidth.toFixed(3) + " height: " + relHeight.toFixed(3)  + " size: (" + relWidth.toFixed(3)  + "x" + relHeight.toFixed(3)  + ")";
     });
     function drawbbox(inputVal) {
       const parts = inputVal.split(',').map(s => parseFloat(s.trim()));

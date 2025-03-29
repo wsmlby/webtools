@@ -55,6 +55,9 @@
     button {
       margin: 5px 5px 0 0;
     }
+    .readbox {
+      width: 640px;
+    }
   </style>
   {{SIDEBAR_STYLE}}
 </head>
@@ -79,10 +82,11 @@
     <p id="imgSize"></p>
 
     <!-- Display last click coordinate (both absolute and relative) -->
-    <p id="clickCoords">Last click coordinate: </p>
+    <textarea id="clickCoords" readonly class="readbox" rows=3>Last click coordinate: </textarea><br/>
 
     <!-- Display polygon coordinates (both absolute and relative) -->
-    <p id="polyCoords">Polygon coordinates: </p>
+    <textarea id="polyCoords" readonly class="readbox" rows=3>Polygon coordinates: </textarea>
+    <textarea id="polyCoordsClosed" readonly class="readbox" rows=3>Polygon coordinates(closed): </textarea>
 
     <!-- Controls for mouse-drawn polygon -->
     <p>
@@ -110,6 +114,8 @@
     const imgSizeDisplay = document.getElementById('imgSize');
     const clickCoordsDisplay = document.getElementById('clickCoords');
     const polyCoordsDisplay = document.getElementById('polyCoords');
+    const polyCoordsClosedDisplay = document.getElementById('polyCoordsClosed');
+    
     const finishPolygonBtn = document.getElementById('finishPolygonBtn');
     const coordInputPolygon = document.getElementById('coordInputPolygon');
     const drawPolygonBtn = document.getElementById('drawPolygonBtn');
@@ -185,6 +191,19 @@
       container.style.display = "inline-block";
     });
 
+    container.addEventListener('mousemove', function (e) {
+      const rect = container.getBoundingClientRect();
+      const dispX = e.clientX - rect.left;
+      const dispY = e.clientY - rect.top;
+      // Convert to full image coordinates.
+      const fullX = dispX / scale;
+      const fullY = dispY / scale;
+      const relX = fullX / image.naturalWidth;
+      const relY = fullY / image.naturalHeight;
+      clickCoordsDisplay.textContent = 'Mouse: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
+        '\nRelative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
+    })
+
     // When clicking on the container, record the point for polygon drawing and show coordinates.
     container.addEventListener('click', function (e) {
       const rect = container.getBoundingClientRect();
@@ -195,9 +214,7 @@
       const fullY = dispY / scale;
       const relX = fullX / image.naturalWidth;
       const relY = fullY / image.naturalHeight;
-      clickCoordsDisplay.textContent = 'Last click coordinate: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
-        ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
-
+      
       // Add the point (using display coordinates) to the current polygon
       currentPolygonPoints.push({ dispX, dispY });
 
@@ -224,7 +241,7 @@
         const fy = pt.dispY / scale;
         return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(2);
       }).join(" ");
-      polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + ' | Relative: ' + relPoints;
+      polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + ' \nRelative: ' + relPoints;
     });
 
     // Finish the mouse-drawn polygon
@@ -250,7 +267,11 @@
         const fy = pt.dispY / scale;
         return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(3);
       }).join(",");
-      polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + ' | Relative: ' + relPoints;
+      polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + '\nRelative: ' + relPoints;
+      const lastP = currentPolygonPoints[0];
+      const last = ","+Math.round(lastP.dispX / scale) + "," + Math.round(lastP.dispY / scale);
+      const lastRel = ","+(lastP.dispX / scale/ image.naturalWidth).toFixed(3) + "," + (lastP.dispY  / scale/ image.naturalHeight).toFixed(3);
+      polyCoordsClosedDisplay.textContent = 'Polygon coordinates Closed: Absolute: ' + absPoints + last + '\nRelative: ' + relPoints + lastRel;
 
       // Remove the preview polyline and reset points
       if (previewPolyline) {
