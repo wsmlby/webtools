@@ -161,6 +161,7 @@ div.content {
     <h1>Polygon Drawing on Image</h1>
     <!-- Image file selection -->
     <input type="file" id="fileInput" accept="image/*">
+    <input type="text" id="urlinput" placeholder="Or paste image URL here">
     <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
     <p>This site is pure locally, no image is uploaded</p>
 
@@ -198,6 +199,7 @@ div.content {
   <script>
     // Get DOM elements
     const fileInput = document.getElementById('fileInput');
+    const urlInput = document.getElementById('urlinput');
     const image = document.getElementById('image');
     const container = document.getElementById('container');
     const overlaySvg = document.getElementById('overlaySvg');
@@ -233,6 +235,18 @@ div.content {
       const file = e.target.files[0];
       if (file) {
         loadImage(file);
+      }
+    });
+    urlInput.addEventListener('input', function (e) {
+      const url = e.target.value;
+      if (url) {
+        // Validate URL and load image
+        try {
+          new URL(url); // Check if it's a valid URL
+          image.src = url;
+        } catch (err) {
+          alert('Invalid URL. Please enter a valid image URL.');
+        }
       }
     });
 

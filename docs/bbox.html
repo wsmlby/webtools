@@ -144,6 +144,7 @@ div.content {
     <h1>Bounding Box Drawing on Image</h1>
     <!-- Image selection and paste -->
     <input type="file" id="fileInput" accept="image/*">
+    <input type="text" id="urlinput" placeholder="Or paste image URL here">
     <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
     <p>This site is pure locally, no image is uploaded</p>
 
@@ -170,6 +171,7 @@ div.content {
 
   <script>
     const fileInput = document.getElementById('fileInput');
+    const urlInput = document.getElementById('urlinput');
     const image = document.getElementById('image');
     const container = document.getElementById('container');
     const imgSizeDisplay = document.getElementById('imgSize');
@@ -201,7 +203,18 @@ div.content {
         loadImage(file);
       }
     });
-
+    urlInput.addEventListener('input', function (e) {
+      const url = e.target.value;
+      if (url) {
+        // Validate URL and load image
+        try {
+          new URL(url); // Check if it's a valid URL
+          image.src = url;
+        } catch (err) {
+          alert('Invalid URL. Please enter a valid image URL.');
+        }
+      }
+    });
     // Handle pasting image from clipboard
     window.addEventListener('paste', function (e) {
       const items = e.clipboardData.items;
