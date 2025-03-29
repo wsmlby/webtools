@@ -2,7 +2,8 @@ import os
 TAGS = {
     "{{GA_TAG}}": "docs/_includes/head-custom-google-analytics.html",
     "{{SIDEBAR_STYLE}}": "includes/sidebar_style.html",
-    "{{SIDEBAR_HTML}}":"includes/sidebar.html"
+    "{{SIDEBAR_HTML}}":"includes/sidebar.html",
+    "{{INCONTENT_ADS}}": "includes/content_ads.html",
 }
 
 SEO= {
@@ -15,7 +16,12 @@ SEO= {
         "TITLE": "Online Image Polygon Overlay & Measure",
         "DESCRIPTION": "Use our free online tools to annotate images with polygons for machine learning, computer vision, and design projects.",
         "KEYWORDS": "polygon, marker, overlay, image, online, tool, image annotation, online tools"
-    }
+    },
+    "epoch.html": {
+         "TITLE":"Epoch Conversion Online Tools",
+          "DESCRIPTION" : 'Use our online tools to convert timestamps into local and UTC time formats', 
+          "KEYWORDS": 'epoch converter, epoch utc, epoch time, epoch time converter, timestamp conversion',
+    },
 }
 
 def get_seo_tags(cfg):

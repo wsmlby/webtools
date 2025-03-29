@@ -1,0 +1,327 @@
+src/epoch.html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Epoch Conversion Online Tools</title>
+<meta name="description" content="Use our online tools to convert timestamps into local and UTC time formats">
+<!-- Canonical URL -->
+<link rel="canonical" href="https://wsmlby.github.io/webtools/epoch.html">
+
+<!-- Meta Robots -->
+<meta name="robots" content="index, follow">
+
+<meta name="keywords" content="epoch converter, epoch utc, epoch time, epoch time converter, timestamp conversion">
+
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="Epoch Conversion Online Tools">
+<meta property="og:description" content="Use our online tools to convert timestamps into local and UTC time formats">
+<meta property="og:image" content="https://wsmlby.github.io/webtools/imgs/epoch.html.png">
+<meta property="og:url" content="https://wsmlby.github.io/webtools/epoch.html">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Epoch Conversion Online Tools">
+<meta name="twitter:description" content="Use our online tools to convert timestamps into local and UTC time formats">
+<meta name="twitter:image" content="https://wsmlby.github.io/webtools/imgs/epoch.html.png">
+
+<!-- Structured Data Example (JSON-LD) -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Epoch Conversion Online Tools",
+    "description": "Use our online tools to convert timestamps into local and UTC time formats",
+    "url": "https://wsmlby.github.io/webtools/epoch.html"
+  }
+  </script>
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epoch Converter</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+
+        #results {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .result-row {
+            margin-bottom: 5px;
+        }
+    </style>
+    <style>
+/* Sidebar styling */
+#sidebar {
+position: fixed;
+top: 0;
+left: 0;
+width: 240px;
+height: 100%;
+background-color: #fafafa;
+padding: 40px 20px;
+box-sizing: border-box;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+/* Section header styling */
+#sidebar h2 {
+font-size: 18px;
+margin-top: 0;
+color: #444;
+border-bottom: 1px solid #e1e4e8;
+padding-bottom: 5px;
+margin-bottom: 15px;
+}
+/* List styling */
+#sidebar ul {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+#sidebar ul li {
+margin: 10px 0;
+}
+#sidebar ul li a {
+text-decoration: none;
+font-size: 16px;
+color: #555;
+padding: 5px;
+transition: background-color 0.3s, color 0.3s;
+display: block;
+border-radius: 4px;
+}
+#sidebar ul li a:hover {
+background-color: #0366d6;
+color: #fff;
+}
+div.advertisement {
+    background-color: #0366d6;
+    width: 200px; /* Match sidebar width */
+    min-height: 300px;
+    height: auto;
+}
+/* Main content area styling */
+div.content {
+    margin-left: 260px; /* Sidebar width plus extra space */
+    padding: 40px;
+}
+</style>
+</head>
+
+<body>
+    <div id="sidebar">
+    <ul>
+        <li><a href="/webtools/">Home</a></li>
+        <div class="sidebar-section">
+            <h2>Image Tools</h2>
+            <ul>
+                <li><a href="bbox.html">Bounding Box Annotation</a></li>
+                <li><a href="polygon.html">Polygon Annotation</a></li>
+            </ul>
+            <h2>Time Tools</h2>
+            <ul>
+                <li><a href="epoch.html">Epoch Converter</a></li>
+            </ul>
+        </div>
+
+   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-7444078748382174"
+        data-ad-slot="4896466399"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>
+    </ul>
+</div>
+    <div class="content">
+        <h1>Epoch Timestamp Converter</h1>
+
+        <p>Enter an epoch timestamp (in seconds or milliseconds):</p>
+        <input type="number" id="epochInput" placeholder="Epoch Timestamp">
+        <select id="timeUnitSelect">
+            <option value="seconds">Seconds</option>
+            <option value="milliseconds">Milliseconds</option>
+        </select>
+        <button id="convertBtn">Convert</button>
+        <button id="clearBtn">Clear</button>
+
+        <h2>Convert Date/Time to Epoch</h2>
+        <p>Enter a date and time:</p>
+        <input type="datetime-local" id="dateTimeInput">
+        <select id="dateTimeUnitSelect">
+            <option value="seconds">Seconds</option>
+            <option value="milliseconds">Milliseconds</option>
+        </select>
+        <button id="dateTimeConvertBtn">Convert to Epoch</button>
+
+        <div id="results">
+            <h2>Results:</h2>
+            <div id="localDateTime" class="result-row">
+                <strong>Local Date/Time:</strong> <span id="localDateTimeValue"></span>
+            </div>
+            <div id="utcDateTime" class="result-row">
+                <strong>UTC Date/Time:</strong> <span id="utcDateTimeValue"></span>
+            </div>
+            <div id="epochResult" class="result-row">
+                <strong>Epoch Timestamp:</strong> <span id="epochValue"></span>
+            </div>
+        </div>
+
+        <div>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7444078748382174"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-7444078748382174"
+     data-ad-slot="4332160502"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+            <div class="explanation">
+                <h2>Understanding Epoch Time and UTC</h2>
+
+                <p>
+                    <strong>Epoch time</strong>, also known as Unix time, is a system for tracking a point in time. It
+                    represents the number of seconds (or milliseconds) that have elapsed since the
+                    <strong>Epoch</strong>, which is January 1, 1970, at 00:00:00 Coordinated Universal Time (UTC).
+                </p>
+
+                <p>
+                    Think of it as a single, constantly increasing number that represents a specific moment. This makes
+                    it easy to compare and sort dates and times because you're essentially working with a numerical
+                    value. Epoch time is widely used in computer systems and applications for storing and manipulating
+                    date and time information because it's simple and efficient.
+                </p>
+
+                <p>
+                    <strong>UTC (Coordinated Universal Time)</strong> is the primary time standard by which the world
+                    regulates clocks and time. It's essentially the successor to Greenwich Mean Time (GMT). UTC is not
+                    tied to any specific location and doesn't observe daylight saving time. It's a globally recognized
+                    standard, making it ideal for coordinating time across different time zones.
+                </p>
+
+                <p>
+                    When you convert an epoch timestamp, the tool will typically show you the equivalent date and time
+                    in both your local time zone and in UTC. This helps you understand how the epoch timestamp relates
+                    to both your local time and the global time standard.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const epochInput = document.getElementById('epochInput');
+        const timeUnitSelect = document.getElementById('timeUnitSelect');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        const dateTimeInput = document.getElementById('dateTimeInput');
+        const dateTimeUnitSelect = document.getElementById('dateTimeUnitSelect');
+        const dateTimeConvertBtn = document.getElementById('dateTimeConvertBtn');
+
+        const localDateTimeValue = document.getElementById('localDateTimeValue');
+        const utcDateTimeValue = document.getElementById('utcDateTimeValue');
+        const epochValue = document.getElementById('epochValue');
+
+        function convertEpoch() {
+            const epoch = parseFloat(epochInput.value);
+            const timeUnit = timeUnitSelect.value;
+
+            if (isNaN(epoch)) {
+                alert('Please enter a valid number for the epoch timestamp.');
+                return;
+            }
+
+            let epochTime;
+            if (timeUnit === 'milliseconds') {
+                epochTime = epoch;
+            } else { // assume seconds
+                epochTime = epoch * 1000; // Convert seconds to milliseconds
+            }
+
+            try {
+                const date = new Date(epochTime);
+                localDateTimeValue.textContent = date.toLocaleString();  // Local time
+                utcDateTimeValue.textContent = date.toUTCString();       // UTC time
+            } catch (error) {
+                alert('Invalid timestamp or conversion error.');
+                console.error(error);  // Log the error for debugging
+                localDateTimeValue.textContent = '';
+                utcDateTimeValue.textContent = '';
+            }
+        }
+
+        function clearResults() {
+            epochInput.value = "";
+            localDateTimeValue.textContent = '';
+            utcDateTimeValue.textContent = '';
+            epochValue.textContent = ''; // Clear epoch value
+        }
+
+        convertBtn.addEventListener('click', convertEpoch);
+        clearBtn.addEventListener('click', clearResults);
+
+
+        function convertDateTimeToEpoch() {
+            const dateTimeString = dateTimeInput.value;
+            const timeUnit = dateTimeUnitSelect.value;
+
+            if (!dateTimeString) {
+                alert('Please enter a valid date and time.');
+                return;
+            }
+
+            const date = new Date(dateTimeString);
+
+            if (isNaN(date.getTime())) {
+                alert('Invalid date and time format.');
+                return;
+            }
+
+            let epochTime;
+            if (timeUnit === 'milliseconds') {
+                epochTime = date.getTime();
+            } else {  // seconds
+                epochTime = Math.floor(date.getTime() / 1000);  // Convert to seconds
+            }
+            epochValue.textContent = epochTime;
+        }
+
+        dateTimeConvertBtn.addEventListener('click', convertDateTimeToEpoch);
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0274KCKK9Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0274KCKK9Y');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7444078748382174"
+     crossorigin="anonymous"></script>
+</body>
+
+</html>
