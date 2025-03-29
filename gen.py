@@ -9,10 +9,12 @@ SEO= {
     "bbox.html": {
         "TITLE": "Interactive Image Annotation Tools: Bounding Box Drawing",
         "DESCRIPTION": "Use our free interactive tools to annotate images with bounding boxes for machine learning, computer vision, and design projects.",
+        "KEYWORDS": "bounding box, image annotation, interactive tools, machine learning, computer vision, design projects"
     },
     "polygon.html": {
         "TITLE": "Interactive Image Annotation Tools: Polygon Drawing",
         "DESCRIPTION": "Use our free interactive tools to annotate images with polygons for machine learning, computer vision, and design projects.",
+        "KEYWORDS": "polygon, image annotation, interactive tools, machine learning, computer vision, design projects"
     }
 }
 
