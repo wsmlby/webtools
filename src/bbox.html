@@ -74,6 +74,41 @@
       <button id="drawBoxBtn">Draw Box</button>
       <button id="clearBoxesBtn">Clear Boxes</button>
     </p>
+    <div class="explanation">
+      <h2>How to Use this Tool</h2>
+      <p>This tool allows you to draw and define <strong>bounding boxes</strong> on an image.  A bounding box is a rectangular area used to identify and locate objects within an image. It's commonly used in computer vision tasks like object detection and image annotation.</p>
+      <p><strong>Important:</strong> This tool operates entirely within your web browser.  <strong>No images are uploaded to any server, and no data is stored.</strong> All processing happens locally on your computer, ensuring your images and the bounding box data remain private and secure.</p>
+
+
+      <p><strong>Here's how to use it:</strong></p>
+      <ul>
+        <li>
+          <strong>Load an Image:</strong> You can either upload an image file using the "Choose File" button, paste an image URL into the text field, or paste an image directly from your clipboard (Ctrl+V / Cmd+V).
+        </li>
+        <li>
+          <strong>Draw a Bounding Box (with mouse):</strong>
+          <ol>
+            <li>Click and hold the left mouse button where you want to start the top-left corner of your bounding box.</li>
+            <li>Drag the mouse to the bottom-right corner of the object you want to enclose.</li>
+            <li>Release the mouse button. A red box will appear, representing your bounding box.</li>
+          </ol>
+        </li>
+        <li>
+          <strong>Draw a Bounding Box (with coordinates):</strong>
+          <ol>
+            <li>Enter the coordinates of the top-left (x1, y1) and bottom-right (x2, y2) corners of the bounding box in the text area provided. Use the format:  <code>x1,y1,x2,y2</code>.  Coordinates can be absolute pixel values or relative values (normalized to the range \[0, 1]).</li>
+            <li>Click the "Draw Box" button.</li>
+          </ol>
+        </li>
+        <li>
+          <strong>View Coordinates:</strong>  The tool will display the bounding box's coordinates (x1, y1, x2, y2), both in absolute pixel values and relative values (normalized to the image's width and height). It also displays width and height.
+        </li>
+        <li>
+          <strong>Clear Boxes:</strong> Use the "Clear Boxes" button to remove all drawn bounding boxes from the image.
+        </li>
+
+      </ul>
+    </div>
   </div>
 
   <script>

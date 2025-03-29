@@ -215,6 +215,42 @@ div.content {
       <button id="drawPolygonBtn">Draw Polygon</button>
       <button id="clearPolygonsBtn">Clear Polygons</button>
     </p>
+    <div class="explanation">
+      <h2>How to Use this Tool</h2>
+      <p>This tool allows you to draw and define <strong>polygons</strong> on an image. Polygons are used to identify and locate objects within an image. It's commonly used in computer vision tasks like image annotation.</p>
+      <p><strong>Important:</strong> This tool operates entirely within your web browser.  <strong>No images are uploaded to any server, and no data is stored.</strong> All processing happens locally on your computer, ensuring your images and the polygon data remain private and secure.</p>
+
+
+      <p><strong>Here's how to use it:</strong></p>
+      <ul>
+        <li>
+          <strong>Load an Image:</strong> You can either upload an image file using the "Choose File" button, paste an image URL into the text field, or paste an image directly from your clipboard (Ctrl+V / Cmd+V).
+        </li>
+        <li>
+          <strong>Draw a Polygon (with mouse):</strong>
+          <ol>
+            <li>Click on the image to add vertices.</li>
+            <li>When done, click the "Finish Polygon" button.</li>
+            <li>A red polygon will appear, representing your polygon.</li>
+          </ol>
+        </li>
+        <li>
+          <strong>Draw a Polygon (with coordinates):</strong>
+          <ol>
+            <li>Enter the coordinates of the vertices of the polygon in the text area provided. Use the format:  <code>x1,y1,x2,y2,...</code>.  Coordinates can be absolute pixel values or relative values (normalized to the range \[0, 1]).</li>
+            <li>Click the "Draw Polygon" button.</li>
+          </ol>
+        </li>
+        <li>
+          <strong>View Coordinates:</strong>  The tool will display the polygon's coordinates (x1, y1, x2, y2, ...), both in absolute pixel values and relative values (normalized to the image's width and height).
+        </li>
+        <li>
+          <strong>Clear Polygons:</strong> Use the "Clear Polygons" button to remove all drawn polygons from the image.
+        </li>
+
+      </ul>
+    </div>
+  </div>
   </div>
 
   <script>
