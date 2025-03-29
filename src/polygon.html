@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Polygon Drawing on Image</title>
@@ -8,6 +9,7 @@
       font-family: sans-serif;
       margin: 20px;
     }
+
     /* Initially hide the container until an image is loaded */
     #container {
       position: relative;
@@ -15,23 +17,28 @@
       border: 1px solid #ccc;
       margin-top: 10px;
     }
+
     #image {
       display: block;
       /* The image size will be set dynamically */
     }
+
     /* The SVG overlay sits exactly on top of the image */
     #overlaySvg {
       position: absolute;
       top: 0;
       left: 0;
-      pointer-events: none; /* so that clicks go to the container */
+      pointer-events: none;
+      /* so that clicks go to the container */
     }
+
     /* Style for drawn polygons */
     polygon {
       fill: rgba(255, 0, 0, 0.5);
       stroke: red;
       stroke-width: 2;
     }
+
     /* Style for the preview polyline (while drawing) */
     polyline {
       fill: none;
@@ -39,51 +46,59 @@
       stroke-width: 2;
       stroke-dasharray: 4;
     }
+
     input[type="text"] {
       width: 300px;
     }
+
     button {
       margin: 5px 5px 0 0;
     }
   </style>
   {{GA_TAG}}
+  {{SIDEBAR_STYLE}}
 </head>
+
 <body>
-  <h1>Polygon Drawing on Image</h1>
-  <!-- Image file selection -->
-  <input type="file" id="fileInput" accept="image/*">
-  <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
-  
-  <!-- Container for the image and SVG overlay (initially hidden) -->
-  <div id="container">
-    <img id="image" src="" alt="Your Image" draggable="false">
-    <svg id="overlaySvg"></svg>
+  {{SIDEBAR_HTML}}
+  <div class="content">
+    <h1>Polygon Drawing on Image</h1>
+    <!-- Image file selection -->
+    <input type="file" id="fileInput" accept="image/*">
+    <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
+    <p>This site is pure locally, no image is uploaded</p>
+
+    <!-- Container for the image and SVG overlay (initially hidden) -->
+    <div id="container">
+      <img id="image" src="" alt="Your Image" draggable="false">
+      <svg id="overlaySvg"></svg>
+    </div>
+
+    <!-- Display full image dimensions -->
+    <p id="imgSize"></p>
+
+    <!-- Display last click coordinate (both absolute and relative) -->
+    <p id="clickCoords">Last click coordinate: </p>
+
+    <!-- Display polygon coordinates (both absolute and relative) -->
+    <p id="polyCoords">Polygon coordinates: </p>
+
+    <!-- Controls for mouse-drawn polygon -->
+    <p>
+      <strong>Draw polygon with mouse:</strong><br>
+      Click on the image to add vertices. When done, click the "Finish Polygon" button.
+      <button id="finishPolygonBtn">Finish Polygon</button>
+    </p>
+
+    <!-- Controls for polygon from coordinates input -->
+    <p>
+      <strong>Or enter polygon coordinates (format: x1,y1,x2,y2,...):</strong><br>
+      <textarea type="text" id="coordInputPolygon" placeholder="x1,y1,x2,y2,..."></textarea>
+      <button id="drawPolygonBtn">Draw Polygon</button>
+      <button id="clearPolygonsBtn">Clear Polygons</button>
+    </p>
   </div>
-  
-  <!-- Display full image dimensions -->
-  <p id="imgSize"></p>
-  
-  <!-- Display last click coordinate (both absolute and relative) -->
-  <p id="clickCoords">Last click coordinate: </p>
-  
-  <!-- Display polygon coordinates (both absolute and relative) -->
-  <p id="polyCoords">Polygon coordinates: </p>
-  
-  <!-- Controls for mouse-drawn polygon -->
-  <p>
-    <strong>Draw polygon with mouse:</strong><br>
-    Click on the image to add vertices. When done, click the "Finish Polygon" button.
-    <button id="finishPolygonBtn">Finish Polygon</button>
-  </p>
-  
-  <!-- Controls for polygon from coordinates input -->
-  <p>
-    <strong>Or enter polygon coordinates (format: x1,y1,x2,y2,...):</strong><br>
-    <textarea  type="text" id="coordInputPolygon" placeholder="x1,y1,x2,y2,..."></textarea>
-    <button id="drawPolygonBtn">Draw Polygon</button>
-    <button id="clearPolygonsBtn">Clear Polygons</button>
-  </p>
-  
+
   <script>
     // Get DOM elements
     const fileInput = document.getElementById('fileInput');
@@ -97,36 +112,36 @@
     const coordInputPolygon = document.getElementById('coordInputPolygon');
     const drawPolygonBtn = document.getElementById('drawPolygonBtn');
     const clearPolygonsBtn = document.getElementById('clearPolygonsBtn');
-    
+
     // For mouse-drawn polygon
     let currentPolygonPoints = []; // will store display coordinates {dispX, dispY}
     let previewPolyline = null;
     let scale = 1; // scale factor from full image to displayed image
-    
+
     // Helper: create SVG element with given name
     function createSvgElement(name) {
       return document.createElementNS("http://www.w3.org/2000/svg", name);
     }
-    
+
     // Load and display image from file/blob
     function loadImage(file) {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         image.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
-    
+
     // Handle file selection
-    fileInput.addEventListener('change', function(e) {
+    fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
         loadImage(file);
       }
     });
-    
+
     // Handle pasting image from clipboard
-    window.addEventListener('paste', function(e) {
+    window.addEventListener('paste', function (e) {
       const items = e.clipboardData.items;
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") !== -1) {
@@ -136,9 +151,9 @@
         }
       }
     });
-    
+
     // When the image loads, compute the scale factor (max display size 640x640)
-    image.addEventListener('load', function() {
+    image.addEventListener('load', function () {
       const naturalWidth = image.naturalWidth;
       const naturalHeight = image.naturalHeight;
       // Calculate scale to limit display to 640x640, but do not enlarge if image is smaller.
@@ -155,9 +170,9 @@
       // Now that an image is loaded, display the container.
       container.style.display = "inline-block";
     });
-    
+
     // When clicking on the container, record the point for polygon drawing and show coordinates.
-    container.addEventListener('click', function(e) {
+    container.addEventListener('click', function (e) {
       const rect = container.getBoundingClientRect();
       const dispX = e.clientX - rect.left;
       const dispY = e.clientY - rect.top;
@@ -167,11 +182,11 @@
       const relX = fullX / image.naturalWidth;
       const relY = fullY / image.naturalHeight;
       clickCoordsDisplay.textContent = 'Last click coordinate: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
-           ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
-      
+        ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
+
       // Add the point (using display coordinates) to the current polygon
       currentPolygonPoints.push({ dispX, dispY });
-      
+
       // Update (or create) the preview polyline
       if (!previewPolyline) {
         previewPolyline = createSvgElement('polyline');
@@ -183,23 +198,23 @@
       }
       const pointsStr = currentPolygonPoints.map(pt => pt.dispX + "," + pt.dispY).join(" ");
       previewPolyline.setAttribute("points", pointsStr);
-      
+
       // Update polygon coordinates display (convert display coordinates to full image coordinates)
       const absPoints = currentPolygonPoints.map(pt => {
-          const fx = pt.dispX / scale;
-          const fy = pt.dispY / scale;
-          return Math.round(fx) + "," + Math.round(fy);
+        const fx = pt.dispX / scale;
+        const fy = pt.dispY / scale;
+        return Math.round(fx) + "," + Math.round(fy);
       }).join(" ");
       const relPoints = currentPolygonPoints.map(pt => {
-          const fx = pt.dispX / scale;
-          const fy = pt.dispY / scale;
-          return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(2);
+        const fx = pt.dispX / scale;
+        const fy = pt.dispY / scale;
+        return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(2);
       }).join(" ");
       polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + ' | Relative: ' + relPoints;
     });
-    
+
     // Finish the mouse-drawn polygon
-    finishPolygonBtn.addEventListener('click', function() {
+    finishPolygonBtn.addEventListener('click', function () {
       if (currentPolygonPoints.length < 3) {
         alert("You need at least 3 points to form a polygon.");
         return;
@@ -209,20 +224,20 @@
       const pointsStr = currentPolygonPoints.map(pt => pt.dispX + "," + pt.dispY).join(" ");
       polygon.setAttribute("points", pointsStr);
       overlaySvg.appendChild(polygon);
-      
+
       // Update the display with final polygon coordinates (converted to full image coordinates).
       const absPoints = currentPolygonPoints.map(pt => {
-          const fx = pt.dispX / scale;
-          const fy = pt.dispY / scale;
-          return Math.round(fx) + "," + Math.round(fy);
+        const fx = pt.dispX / scale;
+        const fy = pt.dispY / scale;
+        return Math.round(fx) + "," + Math.round(fy);
       }).join(",");
       const relPoints = currentPolygonPoints.map(pt => {
-          const fx = pt.dispX / scale;
-          const fy = pt.dispY / scale;
-          return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(3);
+        const fx = pt.dispX / scale;
+        const fy = pt.dispY / scale;
+        return (fx / image.naturalWidth).toFixed(3) + "," + (fy / image.naturalHeight).toFixed(3);
       }).join(",");
       polyCoordsDisplay.textContent = 'Polygon coordinates: Absolute: ' + absPoints + ' | Relative: ' + relPoints;
-      
+
       // Remove the preview polyline and reset points
       if (previewPolyline) {
         overlaySvg.removeChild(previewPolyline);
@@ -231,7 +246,7 @@
       currentPolygonPoints = [];
     });
     function drawPolygon(inputVal) {
-        const parts = inputVal.split(',').map(s => parseFloat(s.trim()));
+      const parts = inputVal.split(',').map(s => parseFloat(s.trim()));
       if (parts.length < 6 || parts.length % 2 !== 0 || parts.some(isNaN)) {
         alert("Please enter a valid list of coordinates (at least 3 points) in the format: x1,y1,x2,y2,...");
         return;
@@ -241,7 +256,7 @@
       let points = [];
       for (let i = 0; i < parts.length; i += 2) {
         let inputX = parts[i];
-        let inputY = parts[i+1];
+        let inputY = parts[i + 1];
         let absX, absY;
         if (isRatio) {
           absX = inputX * image.naturalWidth;
@@ -261,13 +276,13 @@
       overlaySvg.appendChild(polygon);
     }
     // Draw a polygon from coordinate input (supports both full pixel and ratio values)
-    drawPolygonBtn.addEventListener('click', function() {
+    drawPolygonBtn.addEventListener('click', function () {
       const inputVal = coordInputPolygon.value;
-      for(l of inputVal.split("\n"))if(l.trim().length>0)drawPolygon(l);
+      for (l of inputVal.split("\n")) if (l.trim().length > 0) drawPolygon(l);
     });
-    
+
     // Clear all drawn polygons (and any preview polyline)
-    clearPolygonsBtn.addEventListener('click', function() {
+    clearPolygonsBtn.addEventListener('click', function () {
       // Remove all <polygon> elements from the SVG
       const polygons = overlaySvg.querySelectorAll("polygon");
       polygons.forEach(poly => poly.remove());
@@ -281,4 +296,5 @@
     });
   </script>
 </body>
+
 </html>

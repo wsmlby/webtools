@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Bounding Box Drawing on Image</title>
@@ -8,6 +9,7 @@
       font-family: sans-serif;
       margin: 20px;
     }
+
     /* Hide container until an image is loaded */
     #container {
       position: relative;
@@ -15,17 +17,21 @@
       border: 1px solid #ccc;
       margin-top: 10px;
     }
+
     #image {
       display: block;
     }
+
     .overlay {
       position: absolute;
       background-color: rgba(255, 0, 0, 0.5);
       pointer-events: none;
     }
+
     input[type="text"] {
       width: 200px;
     }
+
     button {
       margin-left: 5px;
       margin-top: 5px;
@@ -40,33 +46,101 @@
 
   gtag('config', 'G-0274KCKK9Y');
 </script>
+  <style>
+/* Sidebar styling */
+#sidebar {
+position: fixed;
+top: 0;
+left: 0;
+width: 240px;
+height: 100%;
+background-color: #fafafa;
+padding: 40px 20px;
+box-sizing: border-box;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+/* Section header styling */
+#sidebar h2 {
+font-size: 18px;
+margin-top: 0;
+color: #444;
+border-bottom: 1px solid #e1e4e8;
+padding-bottom: 5px;
+margin-bottom: 15px;
+}
+/* List styling */
+#sidebar ul {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+#sidebar ul li {
+margin: 10px 0;
+}
+#sidebar ul li a {
+text-decoration: none;
+font-size: 16px;
+color: #555;
+padding: 5px;
+transition: background-color 0.3s, color 0.3s;
+display: block;
+border-radius: 4px;
+}
+#sidebar ul li a:hover {
+background-color: #0366d6;
+color: #fff;
+}
+/* Main content area styling */
+div.content {
+    margin-left: 260px; /* Sidebar width plus extra space */
+    padding: 40px;
+}
+</style>
 </head>
+
 <body>
-  <h1>Bounding Box Drawing on Image</h1>
-  <!-- Image selection and paste -->
-  <input type="file" id="fileInput" accept="image/*">
-  <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
-  
-  <!-- Container for the image and bounding boxes (initially hidden) -->
-  <div id="container">
-    <img id="image" src="" alt="Your Image" draggable="false">
+  <div id="sidebar">
+    <ul>
+        <li><a href="/webtools/">Home</a></li>
+        <div class="sidebar-section">
+            <h2>Image Tools</h2>
+            <ul>
+                <li><a href="bbox.html">Bounding Box Annotation</a></li>
+                <li><a href="polygon.html">Polygon Annotation</a></li>
+            </ul>
+        </div>
+
+
+    </ul>
+</div>
+  <div class="content">
+    <h1>Bounding Box Drawing on Image</h1>
+    <!-- Image selection and paste -->
+    <input type="file" id="fileInput" accept="image/*">
+    <p>Or paste an image from the clipboard (Ctrl+V/Cmd+V anywhere on the page).</p>
+    <p>This site is pure locally, no image is uploaded</p>
+
+    <!-- Container for the image and bounding boxes (initially hidden) -->
+    <div id="container">
+      <img id="image" src="" alt="Your Image" draggable="false">
+    </div>
+
+    <!-- Display full image size -->
+    <p id="imgSize"></p>
+    <!-- Display click coordinates -->
+    <p id="clickCoords">Click coordinates: </p>
+    <!-- Display box coordinates -->
+    <p id="boxCoords">Box coordinates: </p>
+
+    <!-- Controls for bounding box via input -->
+    <p>
+      Enter bounding box coordinates (format: x1,y1,x2,y2):
+      <textarea type="text" id="coordInput" placeholder="x1,y1,x2,y2"></textarea>
+      <button id="drawBoxBtn">Draw Box</button>
+      <button id="clearBoxesBtn">Clear Boxes</button>
+    </p>
   </div>
-  
-  <!-- Display full image size -->
-  <p id="imgSize"></p>
-  <!-- Display click coordinates -->
-  <p id="clickCoords">Click coordinates: </p>
-  <!-- Display box coordinates -->
-  <p id="boxCoords">Box coordinates: </p>
-  
-  <!-- Controls for bounding box via input -->
-  <p>
-    Enter bounding box coordinates (format: x1,y1,x2,y2): 
-    <textarea type="text" id="coordInput" placeholder="x1,y1,x2,y2"></textarea>
-    <button id="drawBoxBtn">Draw Box</button>
-    <button id="clearBoxesBtn">Clear Boxes</button>
-  </p>
-  
+
   <script>
     const fileInput = document.getElementById('fileInput');
     const image = document.getElementById('image');
@@ -77,32 +151,32 @@
     const coordInput = document.getElementById('coordInput');
     const drawBoxBtn = document.getElementById('drawBoxBtn');
     const clearBoxesBtn = document.getElementById('clearBoxesBtn');
-    
+
     let isDrawing = false;
     let startX = 0;
     let startY = 0;
     let currentOverlay = null;
     let scale = 1; // Scale factor: display size / natural size
-    
+
     // Load and display image from a file or blob
     function loadImage(file) {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         image.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
-    
+
     // Handle file selection
-    fileInput.addEventListener('change', function(e) {
+    fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
         loadImage(file);
       }
     });
-    
+
     // Handle pasting image from clipboard
-    window.addEventListener('paste', function(e) {
+    window.addEventListener('paste', function (e) {
       const items = e.clipboardData.items;
       for (let i = 0; i < items.length; i++) {
         if (items[i].type.indexOf("image") !== -1) {
@@ -112,9 +186,9 @@
         }
       }
     });
-    
+
     // When image loads, compute scale factor and set display dimensions (max 640x640)
-    image.addEventListener('load', function() {
+    image.addEventListener('load', function () {
       const naturalWidth = image.naturalWidth;
       const naturalHeight = image.naturalHeight;
       scale = Math.min(640 / naturalWidth, 640 / naturalHeight, 1);
@@ -127,9 +201,9 @@
       imgSizeDisplay.textContent = 'Image size (full resolution): ' + naturalWidth + ' x ' + naturalHeight;
       container.style.display = "inline-block";
     });
-    
+
     // Display click coordinates (both absolute and relative)
-    container.addEventListener('click', function(e) {
+    container.addEventListener('click', function (e) {
       // Do not conflict with drawing (mousedown/move/up)
       if (isDrawing) return;
       const rect = container.getBoundingClientRect();
@@ -140,11 +214,11 @@
       const relX = fullX / image.naturalWidth;
       const relY = fullY / image.naturalHeight;
       clickCoordsDisplay.textContent = 'Click coordinates: Absolute: ' + Math.round(fullX) + ', ' + Math.round(fullY) +
-          ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
+        ' | Relative: ' + relX.toFixed(3) + ', ' + relY.toFixed(3);
     });
-    
+
     // Mouse events for drawing a bounding box
-    container.addEventListener('mousedown', function(e) {
+    container.addEventListener('mousedown', function (e) {
       if (e.button !== 0) return; // left click only
       isDrawing = true;
       const rect = container.getBoundingClientRect();
@@ -158,8 +232,8 @@
       currentOverlay.style.height = '0px';
       container.appendChild(currentOverlay);
     });
-    
-    container.addEventListener('mousemove', function(e) {
+
+    container.addEventListener('mousemove', function (e) {
       if (!isDrawing) return;
       const rect = container.getBoundingClientRect();
       const currentX = e.clientX - rect.left;
@@ -173,8 +247,8 @@
       currentOverlay.style.width = width + 'px';
       currentOverlay.style.height = height + 'px';
     });
-    
-    container.addEventListener('mouseup', function(e) {
+
+    container.addEventListener('mouseup', function (e) {
       if (!isDrawing) return;
       isDrawing = false;
       const rect = container.getBoundingClientRect();
@@ -194,10 +268,10 @@
       const relY1 = absY1 / image.naturalHeight;
       const relX2 = absX2 / image.naturalWidth;
       const relY2 = absY2 / image.naturalHeight;
-      
-      boxCoordsDisplay.textContent = 'Box coordinates: Absolute: ' + 
-         Math.round(absX1) + ', ' + Math.round(absY1) + ', ' + Math.round(absX2) + ', ' + Math.round(absY2) +
-         ' | Relative: ' + relX1.toFixed(3) + ', ' + relY1.toFixed(3) + ', ' + relX2.toFixed(3) + ', ' + relY2.toFixed(3);
+
+      boxCoordsDisplay.textContent = 'Box coordinates: Absolute: ' +
+        Math.round(absX1) + ', ' + Math.round(absY1) + ', ' + Math.round(absX2) + ', ' + Math.round(absY2) +
+        ' | Relative: ' + relX1.toFixed(3) + ', ' + relY1.toFixed(3) + ', ' + relX2.toFixed(3) + ', ' + relY2.toFixed(3);
     });
     function drawbbox(inputVal) {
       const parts = inputVal.split(',').map(s => parseFloat(s.trim()));
@@ -208,9 +282,9 @@
       let [x1, y1, x2, y2] = parts;
       // If all values are in [0,1], treat them as ratios
       if (x1 >= 0 && x1 <= 1 &&
-          y1 >= 0 && y1 <= 1 &&
-          x2 >= 0 && x2 <= 1 &&
-          y2 >= 0 && y2 <= 1) {
+        y1 >= 0 && y1 <= 1 &&
+        x2 >= 0 && x2 <= 1 &&
+        y2 >= 0 && y2 <= 1) {
         x1 *= image.naturalWidth;
         y1 *= image.naturalHeight;
         x2 *= image.naturalWidth;
@@ -223,7 +297,7 @@
       const dispY2 = Math.max(y1, y2) * scale;
       const width = dispX2 - dispX1;
       const height = dispY2 - dispY1;
-      
+
       const overlay = document.createElement('div');
       overlay.classList.add('overlay');
       overlay.style.left = dispX1 + 'px';
@@ -234,16 +308,17 @@
     }
     // Draw a bounding box from input coordinates.
     // Accepts either absolute pixel coordinates or ratios (if all values are between 0 and 1).
-    drawBoxBtn.addEventListener('click', function() {
+    drawBoxBtn.addEventListener('click', function () {
       const inputVal = coordInput.value;
-      for(l of inputVal.split("\n"))if(l.trim().length>0) drawbbox(l);
+      for (l of inputVal.split("\n")) if (l.trim().length > 0) drawbbox(l);
     });
-    
+
     // Clear all bounding boxes
-    clearBoxesBtn.addEventListener('click', function() {
+    clearBoxesBtn.addEventListener('click', function () {
       const overlays = container.querySelectorAll('.overlay');
       overlays.forEach(overlay => overlay.remove());
     });
   </script>
 </body>
+
 </html>

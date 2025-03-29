@@ -1,6 +1,8 @@
 import os
 TAGS = {
-    "{{GA_TAG}}": "docs/_includes/head-custom-google-analytics.html"
+    "{{GA_TAG}}": "docs/_includes/head-custom-google-analytics.html",
+    "{{SIDEBAR_STYLE}}": "includes/sidebar_style.html",
+    "{{SIDEBAR_HTML}}":"includes/sidebar.html"
 }
 
 
