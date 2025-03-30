@@ -86,7 +86,7 @@ def main():
         template_fill(os.path.join(SRC_DIR, fn), os.path.join(DESC_DIR, fn), fn)
         if fn.endswith(".html"):
             sitemap.add(fn)
-    create_sitemap(os.path.join(SRC_DIR, "sitemap.xml"), os.path.join(DESC_DIR, "sitemap.xml"), sitemap)
+    create_sitemap(os.path.join(SRC_DIR, "sitemap.xml"), os.path.join("../wsmlby.github.io/", "sitemap.xml"), sitemap)
 
 
 
