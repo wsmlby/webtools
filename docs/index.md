@@ -11,3 +11,6 @@ This is a collection of tools and resources for engineers to enhance productivit
 ## Time Tools
 
 1. [Epoch Converter Online Tool (UTC to Local and vice versa)](/epoch.html)
+
+## Privacy Policy
+You can find our privacy policy [here.](/privacy-policy.md)
