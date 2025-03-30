@@ -1,3 +1,4 @@
+import datetime
 import os
 TAGS = {
     "{{GA_TAG}}": "docs/_includes/head-custom-google-analytics.html",
@@ -56,11 +57,37 @@ def template_fill(src_file, dest_file, page):
     with open(dest_file, 'w') as f:
         f.write(content)
 
+BASE_PATH = "https://wsmlby.github.io/webtools/"
+def create_sitemap(src_fn, dst_fn, sitemap):
+    maps = []
+    TIME = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    for k in sitemap:
+         URL = BASE_PATH + k
+         maps.append(f"""<url>
+  <loc>{URL}</loc>
+  <lastmod>{TIME}</lastmod>
+  <priority>1.00</priority>
+</url>""")
+    
+    with open (dst_fn,'w') as f:   # write to the file specified by dst_filepath name in destination directory with same names of source files.
+        with open(src_fn,'r') as src:
+            content = src.read()
+            content = content.replace("{{SITEMAP_LINKS}}", "\n".join(maps))
+            f.write(content)
+
+
 def main():
     SRC_DIR = "src"
     DESC_DIR = "docs"
+    sitemap = set(["", "privacy-policy.html"])
     for fn in os.listdir(SRC_DIR):
+        if fn.endswith("sitemap.xml"):
+            continue
         template_fill(os.path.join(SRC_DIR, fn), os.path.join(DESC_DIR, fn), fn)
+        if fn.endswith(".html"):
+            sitemap.add(fn)
+    create_sitemap(os.path.join(SRC_DIR, "sitemap.xml"), os.path.join(DESC_DIR, "sitemap.xml"), sitemap)
+
 
 
 if __name__ == '__main__':
