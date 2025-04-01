@@ -171,6 +171,7 @@
     function loadImage(file) {
       const reader = new FileReader();
       reader.onload = function (e) {
+        clearPolygons(); // Clear any existing polygons
         image.src = e.target.result;
       };
       reader.readAsDataURL(file);
@@ -351,9 +352,7 @@
       const inputVal = coordInputPolygon.value;
       for (l of inputVal.split("\n")) if (l.trim().length > 0) drawPolygon(l);
     });
-
-    // Clear all drawn polygons (and any preview polyline)
-    clearPolygonsBtn.addEventListener('click', function () {
+    function clearPolygons() {
       // Remove all <polygon> elements from the SVG
       const polygons = overlaySvg.querySelectorAll("polygon");
       polygons.forEach(poly => poly.remove());
@@ -364,7 +363,10 @@
       }
       currentPolygonPoints = [];
       polyCoordsDisplay.textContent = 'Polygon coordinates: ';
-    });
+      polyCoordsClosedDisplay.textContent = 'Polygon coordinates Closed: ';
+    }
+    // Clear all drawn polygons (and any preview polyline)
+    clearPolygonsBtn.addEventListener('click', clearPolygons);
   </script>
   {{GA_TAG}}
 </body>

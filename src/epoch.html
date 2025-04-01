@@ -127,7 +127,8 @@ src/epoch.html
             const timeUnit = timeUnitSelect.value;
 
             if (isNaN(epoch)) {
-                alert('Please enter a valid number for the epoch timestamp.');
+                // alert('Please enter a valid number for the epoch timestamp.');
+                localDateTimeValue.textContent = 'Please enter a valid number for the epoch timestamp.';
                 return;
             }
 
@@ -143,9 +144,9 @@ src/epoch.html
                 localDateTimeValue.textContent = date.toLocaleString();  // Local time
                 utcDateTimeValue.textContent = date.toUTCString();       // UTC time
             } catch (error) {
-                alert('Invalid timestamp or conversion error.');
+                // alert('Invalid timestamp or conversion error.');
                 console.error(error);  // Log the error for debugging
-                localDateTimeValue.textContent = '';
+                localDateTimeValue.textContent = 'Invalid timestamp';
                 utcDateTimeValue.textContent = '';
             }
         }
@@ -159,6 +160,8 @@ src/epoch.html
 
         convertBtn.addEventListener('click', convertEpoch);
         clearBtn.addEventListener('click', clearResults);
+        epochInput.addEventListener('change', convertEpoch);
+        timeUnitSelect.addEventListener('change', convertEpoch);
 
 
         function convertDateTimeToEpoch() {
@@ -185,7 +188,8 @@ src/epoch.html
             }
             epochValue.textContent = epochTime;
         }
-
+        dateTimeInput.addEventListener('change', convertDateTimeToEpoch);
+        dateTimeUnitSelect.addEventListener('change', convertDateTimeToEpoch);
         dateTimeConvertBtn.addEventListener('click', convertDateTimeToEpoch);
     </script>
     {{GA_TAG}}

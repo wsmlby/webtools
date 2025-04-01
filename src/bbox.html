@@ -133,6 +133,7 @@
     function loadImage(file) {
       const reader = new FileReader();
       reader.onload = function (e) {
+        clearBoxes();
         image.src = e.target.result;
       };
       reader.readAsDataURL(file);
@@ -297,11 +298,14 @@
       for (l of inputVal.split("\n")) if (l.trim().length > 0) drawbbox(l);
     });
 
-    // Clear all bounding boxes
-    clearBoxesBtn.addEventListener('click', function () {
+    function clearBoxes() {
       const overlays = container.querySelectorAll('.overlay');
       overlays.forEach(overlay => overlay.remove());
-    });
+      boxCoordsDisplay.textContent = 'Box coordinates: ';
+    }
+
+    // Clear all bounding boxes
+    clearBoxesBtn.addEventListener('click', clearBoxes);
   </script>
   {{GA_TAG}}
 </body>
