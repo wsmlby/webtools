@@ -10,7 +10,7 @@ Welcome to our website. We are dedicated to providing a collection of tools for 
 ### No Direct Data Collection
 
 - Our website is designed to operate without collecting any personal data directly from users.
-- The tools provided on the site function without storing or processing any personally identifiable information (PII) on our servers.
+- Unless noted on the page, the tools provided on the site function without storing or processing any personally identifiable information (PII) on our servers.
 
 ### Third-Party Services
 
