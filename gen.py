@@ -23,6 +23,11 @@ SEO= {
           "DESCRIPTION" : 'Use our online tools to convert timestamps into local and UTC time formats', 
           "KEYWORDS": 'epoch converter, epoch utc, epoch time, epoch time converter, timestamp conversion',
     },
+    "qrcode.html": {   # QR Code Generator Online Tools Section... (Complete) "qrcodegen-online" and more..",    },
+        "TITLE":"OpenCV WeChat QRCode Reader",
+        "DESCRIPTION" : 'Use our online tools to read QR code from entire image or a crop of it',
+        "KEYWORDS": 'qrcode, qr code, qrcode reader, qr reader, qr read, opencv qrcode, opencv qrcode reader wechat'
+    }
 }
 
 def get_seo_tags(cfg):
