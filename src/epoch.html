@@ -47,6 +47,7 @@ src/epoch.html
         <select id="timeUnitSelect">
             <option value="seconds">Seconds</option>
             <option value="milliseconds">Milliseconds</option>
+            <option value="microseconds">Microseconds</option>
         </select>
         <button id="convertBtn">Convert</button>
         <button id="clearBtn">Clear</button>
@@ -57,6 +58,7 @@ src/epoch.html
         <select id="dateTimeUnitSelect">
             <option value="seconds">Seconds</option>
             <option value="milliseconds">Milliseconds</option>
+            <option value="microseconds">Microseconds</option>
         </select>
         <button id="dateTimeConvertBtn">Convert to Epoch</button>
 
@@ -132,7 +134,9 @@ src/epoch.html
             }
 
             let epochTime;
-            if (timeUnit === 'milliseconds') {
+            if (timeUnit === 'microseconds') {
+                epochTime = epoch / 1000; // Convert microseconds to milliseconds
+            } else if (timeUnit === 'milliseconds') {
                 epochTime = epoch;
             } else { // assume seconds
                 epochTime = epoch * 1000; // Convert seconds to milliseconds
