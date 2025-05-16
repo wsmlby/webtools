@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {{SEO_TAG}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Tool</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+
+        .gridCell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .gridCell.black {
+            background-color: black;
+        }
+
+        .gridCell.white {
+            background-color: white;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    {{SIDEBAR_STYLE}}
+</head>
+
+<body>
+    {{SIDEBAR_HTML}}
+    <div class="content">
+        <h1>Grid Tool</h1>
+
+        <div>
+            <label for="rows">Rows:</label>
+            <input type="number" id="rows" value="10" min="1">
+            <label for="cols">Columns:</label>
+            <input type="number" id="cols" value="10" min="1">
+            <button id="createGrid">Create Grid</button>
+        </div>
+
+        <table id="gridContainer">
+            <!-- Grid cells will be added here -->
+        </table>
+        <script>
+            const rowsInput = document.getElementById('rows');
+            const colsInput = document.getElementById('cols');
+            const createGridButton = document.getElementById('createGrid');
+            const gridTable = document.getElementById('gridContainer');
+
+            function createGrid(rows, cols) {
+                gridTable.innerHTML = ''; // Clear existing grid
+                // gridTable .style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                for (let i = 0; i < rows; i++) {
+                    const row = document.createElement('tr');
+                    for (let j = 0; j < cols; j++) {
+                        const cell = document.createElement('td');
+                        cell.classList.add('gridCell', 'white'); // Default to white
+                        cell.addEventListener('click', function () {
+                            this.classList.toggle('black');
+                            this.classList.toggle('white');
+                        });
+                        row.appendChild(cell);
+                    }
+                    gridTable.appendChild(row);
+                }
+            }
+
+            createGridButton.addEventListener('click', () => {
+                const rows = parseInt(rowsInput.value, 10);
+                const cols = parseInt(colsInput.value, 10);
+
+                if (isNaN(rows) || isNaN(cols) || rows < 1 || cols < 1) {
+                    alert('Please enter valid row and column numbers.');
+                    return;
+                }
+
+                createGrid(rows, cols);
+            });
+
+            // Initial grid creation
+            createGrid(parseInt(rowsInput.value, 10), parseInt(colsInput.value, 10));
+        </script>
+        <div>
+            <p>This tool allows you to create and manipulate a grid of cells. You can specify the number of rows and
+                columns, and then click on individual cells to toggle their color between black and white. This can be
+                useful for:</p>
+            <ul>
+                <li>Creating simple patterns and designs.</li>
+                <li>Visualizing data or concepts that can be represented in a grid format.</li>
+                <li>Experimenting with grid-based algorithms.</li>
+            </ul>
+        </div>
+    </div>
+    
+    {{GA_TAG}}
+</body>
+
+</html>

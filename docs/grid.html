@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Grid scratchpad</title>
+<meta name="description" content="Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.">
+<link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Webtools" />
+<link rel="manifest" href="/site.webmanifest" />
+<!-- Canonical URL -->
+<link rel="canonical" href="https://wsmlby.github.io/webtools/grid.html">
+
+<!-- Meta Robots -->
+<meta name="robots" content="index, follow">
+
+<meta name="keywords" content="grid, online, tool, scratchpad">
+
+
+<!-- Open Graph Tags -->
+<meta property="og:title" content="Grid scratchpad">
+<meta property="og:description" content="Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.">
+<meta property="og:image" content="https://wsmlby.github.io/webtools/imgs/grid.html.png">
+<meta property="og:url" content="https://wsmlby.github.io/webtools/grid.html">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grid scratchpad">
+<meta name="twitter:description" content="Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.">
+<meta name="twitter:image" content="https://wsmlby.github.io/webtools/imgs/grid.html.png">
+
+<!-- Structured Data Example (JSON-LD) -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Grid scratchpad",
+    "description": "Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.",
+    "url": "https://wsmlby.github.io/webtools/grid.html"
+  }
+  </script>
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Tool</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-right: 10px;
+        }
+
+        .gridCell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .gridCell.black {
+            background-color: black;
+        }
+
+        .gridCell.white {
+            background-color: white;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <style>
+/* Sidebar styling */
+#sidebar {
+position: fixed;
+top: 0;
+left: 0;
+width: 240px;
+height: 100%;
+background-color: #fafafa;
+padding: 40px 20px;
+box-sizing: border-box;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+/* Section header styling */
+#sidebar h2 {
+font-size: 18px;
+margin-top: 0;
+color: #444;
+border-bottom: 1px solid #e1e4e8;
+padding-bottom: 5px;
+margin-bottom: 15px;
+}
+/* List styling */
+#sidebar ul {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+#sidebar ul li {
+margin: 10px 0;
+}
+#sidebar ul li a {
+text-decoration: none;
+font-size: 16px;
+color: #555;
+padding: 5px;
+transition: background-color 0.3s, color 0.3s;
+display: block;
+border-radius: 4px;
+}
+#sidebar ul li a:hover {
+background-color: #0366d6;
+color: #fff;
+}
+div.advertisement {
+    background-color: #0366d6;
+    width: 200px; /* Match sidebar width */
+    min-height: 300px;
+    height: auto;
+}
+/* Main content area styling */
+div.content {
+    margin-left: 260px; /* Sidebar width plus extra space */
+    padding: 40px;
+}
+</style>
+</head>
+
+<body>
+    <div id="sidebar">
+    <ul>
+        <li><a href="/webtools/">Home</a></li>
+        <div class="sidebar-section">
+            <h2>Image Tools</h2>
+            <ul>
+                <li><a href="bbox.html">Bounding Box Annotation</a></li>
+                <li><a href="polygon.html">Polygon Annotation</a></li>
+                <li><a href="qrcode.html">OpenCV WeChat QRCode Reader</a></li>
+            </ul>
+            <h2>Time Tools</h2>
+            <ul>
+                <li><a href="epoch.html">Epoch Converter</a></li>
+            </ul>
+            <h2>Other Tools</h2>
+            <ul>
+                <li><a href="grid.html">Grid Tool</a></li>
+            </ul>
+        </div>
+
+   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-7444078748382174"
+        data-ad-slot="4896466399"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>
+    </ul>
+    <li><a href="https://onlinedevtools.wordpress.com/">Blog</a></li>
+    <li><a href="/webtools/privacy-policy.html">Privacy Policy</a></li>
+</div>
+
+    <div class="content">
+        <h1>Grid Tool</h1>
+
+        <div>
+            <label for="rows">Rows:</label>
+            <input type="number" id="rows" value="10" min="1">
+            <label for="cols">Columns:</label>
+            <input type="number" id="cols" value="10" min="1">
+            <button id="createGrid">Create Grid</button>
+        </div>
+
+        <table id="gridContainer">
+            <!-- Grid cells will be added here -->
+        </table>
+        <script>
+            const rowsInput = document.getElementById('rows');
+            const colsInput = document.getElementById('cols');
+            const createGridButton = document.getElementById('createGrid');
+            const gridTable = document.getElementById('gridContainer');
+
+            function createGrid(rows, cols) {
+                gridTable.innerHTML = ''; // Clear existing grid
+                // gridTable .style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                for (let i = 0; i < rows; i++) {
+                    const row = document.createElement('tr');
+                    for (let j = 0; j < cols; j++) {
+                        const cell = document.createElement('td');
+                        cell.classList.add('gridCell', 'white'); // Default to white
+                        cell.addEventListener('click', function () {
+                            this.classList.toggle('black');
+                            this.classList.toggle('white');
+                        });
+                        row.appendChild(cell);
+                    }
+                    gridTable.appendChild(row);
+                }
+            }
+
+            createGridButton.addEventListener('click', () => {
+                const rows = parseInt(rowsInput.value, 10);
+                const cols = parseInt(colsInput.value, 10);
+
+                if (isNaN(rows) || isNaN(cols) || rows < 1 || cols < 1) {
+                    alert('Please enter valid row and column numbers.');
+                    return;
+                }
+
+                createGrid(rows, cols);
+            });
+
+            // Initial grid creation
+            createGrid(parseInt(rowsInput.value, 10), parseInt(colsInput.value, 10));
+        </script>
+        <div>
+            <p>This tool allows you to create and manipulate a grid of cells. You can specify the number of rows and
+                columns, and then click on individual cells to toggle their color between black and white. This can be
+                useful for:</p>
+            <ul>
+                <li>Creating simple patterns and designs.</li>
+                <li>Visualizing data or concepts that can be represented in a grid format.</li>
+                <li>Experimenting with grid-based algorithms.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0274KCKK9Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0274KCKK9Y');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7444078748382174"
+     crossorigin="anonymous"></script>
+</body>
+
+</html>

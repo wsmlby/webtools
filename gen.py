@@ -27,6 +27,11 @@ SEO= {
         "TITLE":"OpenCV WeChat QRCode Reader",
         "DESCRIPTION" : 'Use our online tools to read QR code from entire image or a crop of it',
         "KEYWORDS": 'qrcode, qr code, qrcode reader, qr reader, qr read, opencv qrcode, opencv qrcode reader wechat'
+    },
+    "grid.html": {
+        "TITLE":"Grid scratchpad",
+        "DESCRIPTION" : 'Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.',
+        "KEYWORDS": 'grid, online, tool, scratchpad'
     }
 }
 
