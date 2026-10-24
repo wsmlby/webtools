@@ -32,6 +32,11 @@ SEO= {
         "TITLE":"Grid scratchpad",
         "DESCRIPTION" : 'Use our free online tools to get a grid scratchpad for drawing, sketching, and design projects.',
         "KEYWORDS": 'grid, online, tool, scratchpad'
+    },
+    "qr-camera.html": {
+        "TITLE": "Camera QR Code Scanner",
+        "DESCRIPTION": "Scan QR codes with your device camera, view decoded text, and open web links. Mobile-friendly scanning directly in your browser.",
+        "KEYWORDS": "qr code, camera, qr scanner, mobile, webcam, qr reader"
     }
 }
 
@@ -96,7 +101,7 @@ def main():
         template_fill(os.path.join(SRC_DIR, fn), os.path.join(DESC_DIR, fn), fn)
         if fn.endswith(".html"):
             sitemap.add(fn)
-    create_sitemap(os.path.join(SRC_DIR, "sitemap.xml"), os.path.join("../wsmlby.github.io/", "sitemap.xml"), sitemap)
+    create_sitemap(os.path.join(SRC_DIR, "sitemap.xml"), os.path.join(DESC_DIR, "sitemap.xml"), sitemap)
 
 
 
