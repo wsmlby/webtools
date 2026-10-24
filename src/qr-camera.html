@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {{SEO_TAG}}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{SIDEBAR_STYLE}}
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: sans-serif; color: #24292f; }
+        main.content { margin-left: 260px; padding: 32px; max-width: 1000px; }
+        h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
+        p { line-height: 1.5; }
+        .preview { position: relative; background: #161b22; border-radius: 12px; overflow: hidden; }
+        video { display: block; width: 100%; max-height: 60vh; min-height: 220px; object-fit: contain; }
+        .controls { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+        button { min-height: 48px; padding: 12px 20px; border: 1px solid #8c959f; border-radius: 8px; background: #f6f8fa; color: #24292f; font: inherit; cursor: pointer; }
+        #start { background: #0366d6; color: white; border-color: #0366d6; }
+        button:disabled { opacity: .55; cursor: default; }
+        button:focus-visible, a:focus-visible { outline: 3px solid #0366d6; outline-offset: 3px; }
+        #status { min-height: 3em; }
+        #status[data-error="true"] { color: #b42318; }
+        .result { border: 1px solid #d0d7de; border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .result h2 { margin-top: 0; font-size: 1.25rem; }
+        #result-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+        #result-link { overflow-wrap: anywhere; padding: 12px 0; }
+        #result-link:not([hidden]) { display: inline-block; }
+        #sidebar { overflow-y: auto; }
+        @media (max-width: 760px) {
+            #sidebar { position: static; width: 100%; height: auto; padding: 16px; box-shadow: none; border-bottom: 1px solid #d0d7de; }
+            #sidebar .sidebar-section { display: none; }
+            #sidebar > ul > li { margin: 0; }
+            #sidebar > li { display: none; }
+            main.content { margin: 0; padding: 16px; }
+            .controls button { flex: 1 1 120px; }
+        }
+    </style>
+</head>
+<body>
+    {{SIDEBAR_HTML}}
+    <main class="content">
+        <h1>Camera QR Code Scanner</h1>
+        <p>Point your camera at a QR code to read it. Camera frames and decoded results stay on your device.</p>
+        <div class="preview">
+            <video id="camera" muted playsinline aria-label="Camera preview"></video>
+        </div>
+        <div class="controls">
+            <button id="start" type="button">Start camera</button>
+            <button id="stop" type="button" disabled>Stop camera</button>
+            <button id="switch" type="button" disabled>Use front camera</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Press Start camera and allow camera access when prompted.</p>
+        <section class="result" aria-labelledby="result-heading">
+            <h2 id="result-heading">Scan result</h2>
+            <div id="result-content" aria-live="polite">
+                <p id="result-text">No QR code scanned yet.</p>
+                <a id="result-link" target="_blank" rel="noopener noreferrer" hidden></a>
+            </div>
+        </section>
+        <h2>How to scan</h2>
+        <p>Use HTTPS and a browser with camera access, such as Safari on iPhone or Chrome on Android. The rear camera is preferred. Keep the code inside the frame, with good lighting. Scanning stops after a result; press Scan again to read another code.</p>
+        <p>Only HTTP and HTTPS web addresses become clickable links. Check the address before opening it; links never open automatically.</p>
+        <p>For a saved image or a difficult code, try the <a href="qrcode.html">OpenCV WeChat QRCode Reader</a>.</p>
+        <p>Powered by <a href="https://github.com/nimiq/qr-scanner" target="_blank" rel="noopener noreferrer">Nimiq QR Scanner</a>. The scanner library is hosted on this site; camera frames are processed locally.</p>
+    </main>
+    <script type="module" src="statics/camera-qr.js"></script>
+</body>
+</html>
